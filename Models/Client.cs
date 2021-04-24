@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Bank.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Bank.Models
 {
@@ -20,7 +22,7 @@ namespace Bank.Models
         [StringLength(13, ErrorMessage = "Invalid phone number")]
         public string PN { get; set; }
         [ForeignKey("ID_user")]
-        public virtual IdentityUser user { get; set; }
+        public virtual AccountUser user { get; set; }
 
         public Client() { }
     }

@@ -23,6 +23,7 @@ namespace Bank.Controllers
             return View();
         }
 
+
         public IActionResult Privacy()
         {
             return View();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Bank.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,7 @@ namespace Bank.Models
         [ForeignKey("ID_position")]
         public virtual Position position { get; set; }
         [ForeignKey("ID_user")]
-        public virtual IdentityUser user { get; set; }
+        public virtual AccountUser user { get; set; }
 
         public Employee() { }
     }

@@ -15,14 +15,14 @@ namespace Bank.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
-                services.AddDbContext<BankDbContext>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("BankDbContextConnection")));
+           // builder.ConfigureServices((context, services) => {
+           //     services.AddDbContext<BankDbContext>(options =>
+            //        options.UseSqlServer(
+            //            context.Configuration.GetConnectionString("BankDbContextConnection")));
 
-                services.AddDefaultIdentity<AccountUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<BankDbContext>();
-            });
+            //    services.AddDefaultIdentity<AccountUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //        .AddEntityFrameworkStores<BankDbContext>();
+           // });
         }
     }
 }
