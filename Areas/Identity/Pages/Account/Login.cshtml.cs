@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Encodings.Web;
+using System.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Bank.Areas.Identity.Data;
@@ -20,14 +21,16 @@ namespace Bank.Areas.Identity.Pages.Account
     {
         private readonly UserManager<AccountUser> _userManager;
         private readonly SignInManager<AccountUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<AccountUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<AccountUser> userManager)
+            UserManager<AccountUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
         }
 
@@ -85,6 +88,11 @@ namespace Bank.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    var user = await _userManager.FindByNameAsync(Input.UserName);
+                    IList<string> roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Contains("Banker")) { returnUrl = "~/Banker" ; 
+                    } else if (roles.Contains("Cashier")) { returnUrl ??= Url.Content("~/Cashier/MainCashierPage"); 
+                    } else if (roles.Contains("Client")) { returnUrl ??= Url.Content("~/Client/MainClientPage"); }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

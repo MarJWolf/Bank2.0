@@ -29,7 +29,10 @@ namespace Bank
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages(options => 
+            {
+            
+            });
 
             services.AddAuthorization(options =>
             {

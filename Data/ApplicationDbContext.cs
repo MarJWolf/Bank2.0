@@ -44,8 +44,6 @@ namespace Bank.Data
 
         public DbSet<Employee> Employee { get; set; }
 
-        //public DbSet<Position> Position { get; set; }
-
         public DbSet<Transaction> Transaction { get; set; }
 
         public DbSet<TransactionCategory> TransactionCategory { get; set; }
