@@ -21,8 +21,8 @@ namespace Bank.Models
         [Column(TypeName = "VARCHAR")]
         [StringLength(13, ErrorMessage = "Invalid phone number")]
         public string PN { get; set; }
-        [ForeignKey("ID_user")]
         public virtual AccountUser user { get; set; }
+        public string UserId { get; set; }
 
         public Client() { }
     }

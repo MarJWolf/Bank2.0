@@ -31,16 +31,24 @@ namespace Bank
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Banker",
+                policy => policy.RequireRole("Banker", "Client"));
+                options.AddPolicy("Cashier",
+                    policy => policy.RequireRole("Cashier", "Client"));
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
             services.AddDefaultIdentity<AccountUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                  .AddEntityFrameworkStores<ApplicationDbContext>();
+                  .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -67,6 +75,57 @@ namespace Bank
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            IServiceProvider serviceProvider = (IServiceProvider)app.ApplicationServices.CreateScope();
+            await CreateRoles(serviceProvider);
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            //initializing custom roles 
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<AccountUser>>();
+            string[] roleNames = { "Banker", "Cashier", "Client"};
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                // ensure that the role does not exist
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database: 
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            // find the user with the admin email 
+            var _user = await UserManager.FindByEmailAsync("admin@email.com");
+
+            // check if the user exists
+            if (_user == null)
+            {
+                //Here you could create the super admin who will maintain the web app
+                var poweruser = new AccountUser
+                {
+                    UserName = "Admin",
+                    Email = "admin@email.com",
+                    EmailConfirmed = true
+                };
+                string adminPassword = "Admin1234!";
+
+                var createPowerUser = await UserManager.CreateAsync(poweruser, adminPassword);
+                if (createPowerUser.Succeeded)
+                {
+                    //here we tie the new user to the role
+                    await UserManager.AddToRoleAsync(poweruser, "Banker");
+                }
+                else
+                {
+                    await UserManager.DeleteAsync(poweruser);
+                    throw new Exception("Error while creating admin!");
+                }
+            }
         }
     }
 }

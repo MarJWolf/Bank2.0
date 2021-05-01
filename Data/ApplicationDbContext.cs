@@ -23,11 +23,15 @@ namespace Bank.Data
 
             builder.HasDefaultSchema("Identity");
             builder.Entity<AccountUser>();
-            builder.Ignore<IdentityRole>();
-            builder.Ignore<IdentityUserClaim <string>>();
-            builder.Ignore<IdentityUserRole <string>>();
+            builder.Entity<IdentityRole>().ToTable("Position");
+            builder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
+            builder.Entity<IdentityUserClaim <string>>().ToTable("UserClaim");
+            builder.Entity<IdentityRoleClaim <string>>().ToTable("RoleClaim");
+            //builder.Ignore<IdentityRole>();
+            //builder.Ignore<IdentityUserClaim <string>>();
+            //builder.Ignore<IdentityUserRole <string>>();
+            //builder.Ignore<IdentityRoleClaim <string>>();
             builder.Ignore<IdentityUserLogin <string>>();
-            builder.Ignore<IdentityRoleClaim <string>>();
             builder.Ignore<IdentityUserToken <string>>();
         }
         public DbSet<AccountType> AccountType { get; set; }
@@ -40,7 +44,7 @@ namespace Bank.Data
 
         public DbSet<Employee> Employee { get; set; }
 
-        public DbSet<Position> Position { get; set; }
+        //public DbSet<Position> Position { get; set; }
 
         public DbSet<Transaction> Transaction { get; set; }
 

@@ -68,9 +68,6 @@ namespace Bank.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -116,13 +113,16 @@ namespace Bank.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AccTypeId")
+                        .HasColumnType("int");
+
                     b.Property<float>("BALANCE")
                         .HasColumnType("real");
 
-                    b.Property<int?>("EGN_client")
+                    b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ID_currency")
+                    b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<float>("INTEREST")
@@ -130,9 +130,11 @@ namespace Bank.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("EGN_client");
+                    b.HasIndex("AccTypeId");
 
-                    b.HasIndex("ID_currency");
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("BankAccount");
                 });
@@ -148,9 +150,6 @@ namespace Bank.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("VARCHAR(10)");
 
-                    b.Property<string>("ID_user")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("NAME")
                         .HasColumnType("nvarchar(max)");
 
@@ -158,12 +157,15 @@ namespace Bank.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("VARCHAR(13)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ID_user");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Client");
                 });
@@ -193,12 +195,6 @@ namespace Bank.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ID_position")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ID_user")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("NAME")
                         .HasColumnType("nvarchar(max)");
 
@@ -206,28 +202,14 @@ namespace Bank.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("VARCHAR(13)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("ID_position");
-
-                    b.HasIndex("ID_user");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Employee");
-                });
-
-            modelBuilder.Entity("Bank.Models.Position", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("NAME")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Position");
                 });
 
             modelBuilder.Entity("Bank.Models.Transaction", b =>
@@ -237,28 +219,34 @@ namespace Bank.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BankAccId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DATE")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ID_bankAccount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ID_employee")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NAME_Category")
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<float>("SUM")
                         .HasColumnType("real");
 
+                    b.Property<int>("TransCatId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("bankAccountID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("transactionCategoryID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("ID_bankAccount");
+                    b.HasIndex("EmployeeId");
 
-                    b.HasIndex("ID_employee");
+                    b.HasIndex("bankAccountID");
 
-                    b.HasIndex("NAME_Category");
+                    b.HasIndex("transactionCategoryID");
 
                     b.ToTable("Transaction");
                 });
@@ -281,15 +269,117 @@ namespace Bank.Migrations
                     b.ToTable("TransactionCategory");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Position");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleClaim");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaim");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRole");
+                });
+
             modelBuilder.Entity("Bank.Models.BankAccount", b =>
                 {
+                    b.HasOne("Bank.Models.AccountType", "acctype")
+                        .WithMany()
+                        .HasForeignKey("AccTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Bank.Models.Client", "client")
                         .WithMany()
-                        .HasForeignKey("EGN_client");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Bank.Models.Currency", "currency")
                         .WithMany()
-                        .HasForeignKey("ID_currency");
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("acctype");
 
                     b.Navigation("client");
 
@@ -300,45 +390,74 @@ namespace Bank.Migrations
                 {
                     b.HasOne("Bank.Areas.Identity.Data.AccountUser", "user")
                         .WithMany()
-                        .HasForeignKey("ID_user");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("user");
                 });
 
             modelBuilder.Entity("Bank.Models.Employee", b =>
                 {
-                    b.HasOne("Bank.Models.Position", "position")
-                        .WithMany()
-                        .HasForeignKey("ID_position");
-
                     b.HasOne("Bank.Areas.Identity.Data.AccountUser", "user")
                         .WithMany()
-                        .HasForeignKey("ID_user");
-
-                    b.Navigation("position");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("user");
                 });
 
             modelBuilder.Entity("Bank.Models.Transaction", b =>
                 {
-                    b.HasOne("Bank.Models.BankAccount", "bankAccount")
-                        .WithMany()
-                        .HasForeignKey("ID_bankAccount");
-
                     b.HasOne("Bank.Models.Employee", "employee")
                         .WithMany()
-                        .HasForeignKey("ID_employee");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bank.Models.BankAccount", "bankAccount")
+                        .WithMany()
+                        .HasForeignKey("bankAccountID");
 
                     b.HasOne("Bank.Models.TransactionCategory", "transactionCategory")
                         .WithMany()
-                        .HasForeignKey("NAME_Category");
+                        .HasForeignKey("transactionCategoryID");
 
                     b.Navigation("bankAccount");
 
                     b.Navigation("employee");
 
                     b.Navigation("transactionCategory");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Bank.Areas.Identity.Data.AccountUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bank.Areas.Identity.Data.AccountUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

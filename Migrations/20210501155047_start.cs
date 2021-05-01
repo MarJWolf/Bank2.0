@@ -32,7 +32,6 @@ namespace Bank.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -73,13 +72,14 @@ namespace Bank.Migrations
                 schema: "Identity",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NAME = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Position", x => x.ID);
+                    table.PrimaryKey("PK_Position", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,14 +108,14 @@ namespace Bank.Migrations
                     NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PN = table.Column<string>(type: "VARCHAR(13)", maxLength: 13, nullable: true),
-                    ID_user = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Client", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Client_AspNetUsers_ID_user",
-                        column: x => x.ID_user,
+                        name: "FK_Client_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalSchema: "Identity",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -131,26 +131,91 @@ namespace Bank.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PN = table.Column<string>(type: "VARCHAR(13)", maxLength: 13, nullable: true),
-                    ID_position = table.Column<int>(type: "int", nullable: true),
-                    ID_user = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Employee_AspNetUsers_ID_user",
-                        column: x => x.ID_user,
+                        name: "FK_Employee_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalSchema: "Identity",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserClaim",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employee_Position_ID_position",
-                        column: x => x.ID_position,
+                        name: "FK_UserClaim_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Identity",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleClaim",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleClaim", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoleClaim_Position_RoleId",
+                        column: x => x.RoleId,
                         principalSchema: "Identity",
                         principalTable: "Position",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                schema: "Identity",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRole_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Identity",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRole_Position_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "Identity",
+                        principalTable: "Position",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,28 +225,36 @@ namespace Bank.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ID_currency = table.Column<int>(type: "int", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
                     INTEREST = table.Column<float>(type: "real", nullable: false),
                     BALANCE = table.Column<float>(type: "real", nullable: false),
-                    EGN_client = table.Column<int>(type: "int", nullable: true)
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    AccTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BankAccount", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_BankAccount_Client_EGN_client",
-                        column: x => x.EGN_client,
+                        name: "FK_BankAccount_AccountType_AccTypeId",
+                        column: x => x.AccTypeId,
+                        principalSchema: "Identity",
+                        principalTable: "AccountType",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BankAccount_Client_ClientId",
+                        column: x => x.ClientId,
                         principalSchema: "Identity",
                         principalTable: "Client",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BankAccount_Currency_ID_currency",
-                        column: x => x.ID_currency,
+                        name: "FK_BankAccount_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
                         principalSchema: "Identity",
                         principalTable: "Currency",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,32 +264,34 @@ namespace Bank.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NAME_Category = table.Column<int>(type: "int", nullable: true),
+                    transactionCategoryID = table.Column<int>(type: "int", nullable: true),
+                    TransCatId = table.Column<int>(type: "int", nullable: false),
                     SUM = table.Column<float>(type: "real", nullable: false),
                     DATE = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ID_employee = table.Column<int>(type: "int", nullable: true),
-                    ID_bankAccount = table.Column<int>(type: "int", nullable: true)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    bankAccountID = table.Column<int>(type: "int", nullable: true),
+                    BankAccId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transaction", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Transaction_BankAccount_ID_bankAccount",
-                        column: x => x.ID_bankAccount,
+                        name: "FK_Transaction_BankAccount_bankAccountID",
+                        column: x => x.bankAccountID,
                         principalSchema: "Identity",
                         principalTable: "BankAccount",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Transaction_Employee_ID_employee",
-                        column: x => x.ID_employee,
+                        name: "FK_Transaction_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalSchema: "Identity",
                         principalTable: "Employee",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transaction_TransactionCategory_NAME_Category",
-                        column: x => x.NAME_Category,
+                        name: "FK_Transaction_TransactionCategory_transactionCategoryID",
+                        column: x => x.transactionCategoryID,
                         principalSchema: "Identity",
                         principalTable: "TransactionCategory",
                         principalColumn: "ID",
@@ -238,62 +313,96 @@ namespace Bank.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankAccount_EGN_client",
+                name: "IX_BankAccount_AccTypeId",
                 schema: "Identity",
                 table: "BankAccount",
-                column: "EGN_client");
+                column: "AccTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankAccount_ID_currency",
+                name: "IX_BankAccount_ClientId",
                 schema: "Identity",
                 table: "BankAccount",
-                column: "ID_currency");
+                column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Client_ID_user",
+                name: "IX_BankAccount_CurrencyId",
+                schema: "Identity",
+                table: "BankAccount",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Client_UserId",
                 schema: "Identity",
                 table: "Client",
-                column: "ID_user");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_ID_position",
+                name: "IX_Employee_UserId",
                 schema: "Identity",
                 table: "Employee",
-                column: "ID_position");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_ID_user",
+                name: "RoleNameIndex",
                 schema: "Identity",
-                table: "Employee",
-                column: "ID_user");
+                table: "Position",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transaction_ID_bankAccount",
+                name: "IX_RoleClaim_RoleId",
                 schema: "Identity",
-                table: "Transaction",
-                column: "ID_bankAccount");
+                table: "RoleClaim",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transaction_ID_employee",
-                schema: "Identity",
-                table: "Transaction",
-                column: "ID_employee");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transaction_NAME_Category",
+                name: "IX_Transaction_bankAccountID",
                 schema: "Identity",
                 table: "Transaction",
-                column: "NAME_Category");
+                column: "bankAccountID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transaction_EmployeeId",
+                schema: "Identity",
+                table: "Transaction",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transaction_transactionCategoryID",
+                schema: "Identity",
+                table: "Transaction",
+                column: "transactionCategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserClaim_UserId",
+                schema: "Identity",
+                table: "UserClaim",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_RoleId",
+                schema: "Identity",
+                table: "UserRole",
+                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AccountType",
+                name: "RoleClaim",
                 schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "Transaction",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "UserClaim",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "UserRole",
                 schema: "Identity");
 
             migrationBuilder.DropTable(
@@ -309,15 +418,19 @@ namespace Bank.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
+                name: "Position",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "AccountType",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
                 name: "Client",
                 schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "Currency",
-                schema: "Identity");
-
-            migrationBuilder.DropTable(
-                name: "Position",
                 schema: "Identity");
 
             migrationBuilder.DropTable(

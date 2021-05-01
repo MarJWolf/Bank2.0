@@ -10,16 +10,17 @@ namespace Bank.Models
     {
         public int ID { get; set;}
 
-        [ForeignKey("ID_currency")]
         public virtual Currency currency { get; set; }
-
+        public int CurrencyId { get; set; }
         public float INTEREST { get; set; }
 
         public float BALANCE { get; set; }
 
-        [ForeignKey("EGN_client")]
         public virtual Client client { get; set; }
+        public int ClientId { get; set; }
 
+        public virtual AccountType acctype { get; set; }
+        public int AccTypeId { get; set; }
         public BankAccount()
         {
 

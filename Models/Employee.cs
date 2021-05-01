@@ -16,11 +16,11 @@ namespace Bank.Models
         [Column(TypeName = "VARCHAR")]
         [StringLength(13, ErrorMessage = "Invalid phone number")]
         public string PN { get; set; }
-        [ForeignKey("ID_position")]
-        public virtual Position position { get; set; }
-        [ForeignKey("ID_user")]
+        //[ForeignKey("ID_position")]
+       // public virtual Position position { get; set; }
         public virtual AccountUser user { get; set; }
 
+        public string UserId { get; set; }
         public Employee() { }
     }
 }
