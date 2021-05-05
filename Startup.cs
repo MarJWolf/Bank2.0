@@ -18,6 +18,7 @@ namespace Bank
 {
     public class Startup
     {
+ 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -80,7 +81,7 @@ namespace Bank
             });
 
             IServiceProvider serviceProvider = (IServiceProvider)app.ApplicationServices.CreateScope();
-            await CreateRoles(serviceProvider);
+            await CreateRoles(serviceProvider); // tuk dava exception za bazata ot danni
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
