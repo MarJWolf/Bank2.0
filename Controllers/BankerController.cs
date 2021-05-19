@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Bank.Data;
 using Bank.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Bank.Areas.Identity.Data;
 
 namespace Bank.Controllers
 {
@@ -15,11 +17,14 @@ namespace Bank.Controllers
     public class BankerController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<AccountUser> _userManager;
 
-        public BankerController(ApplicationDbContext context)
+        public BankerController(ApplicationDbContext context, UserManager<AccountUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
 
         // GET: Banker
         public async Task<IActionResult> Index()
@@ -47,10 +52,25 @@ namespace Bank.Controllers
             return View(employee);
         }
 
-        // GET: Banker/Create
-        public IActionResult Create()
+
+        //a second one 
+        public async Task<IActionResult> ViewAll()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            //var applicationDbContext = _context.Employee.Include(e => e.user);
+           // _userManager.IsInRoleAsync("Client");
+            var Clients = await _userManager.GetUsersInRoleAsync("Client");
+            ViewData["AllClients"] = Clients.ToList();
+            var Bankers = await _userManager.GetUsersInRoleAsync("Banker");
+            ViewData["AllBankers"] = Bankers.ToList();
+            var Cashiers = await _userManager.GetUsersInRoleAsync("Cashier");
+            ViewData["AllCashiers"] = Cashiers.ToList();
+            return View();
+        }
+
+        // GET: Banker/Create
+        public IActionResult Create(string id)
+        {
+            ViewData["UserId"] = id;
             return View();
         }
 
@@ -59,7 +79,7 @@ namespace Bank.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,NAME,PN,UserId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("NAME,PN,UserId")] Employee employee)
         {
             if (ModelState.IsValid)
             {

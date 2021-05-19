@@ -14,18 +14,17 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NAME" class="control-label"></label>
+                <label class="control-label">Name</label>
                 <input asp-for="NAME" class="form-control" />
                 <span asp-validation-for="NAME" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PN" class="control-label"></label>
+                <label  class="control-label">Private number</label>
                 <input asp-for="PN" class="form-control" />
                 <span asp-validation-for="PN" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            <div>
+                <input asp-for="UserId" type="hidden" value="@ViewData["UserId"]"/>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

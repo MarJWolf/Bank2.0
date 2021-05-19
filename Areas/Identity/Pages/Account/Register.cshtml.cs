@@ -86,6 +86,7 @@ namespace Bank.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");//trqbva da vrushta kum glavniq page na bankera?
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -116,6 +117,13 @@ namespace Bank.Areas.Identity.Pages.Account
                     // _signInManager.Options
                     //   await _signInManager.SignInAsync(user, isPersistent: false);
                     await _userManager.AddToRoleAsync(user, Input.Type);
+                    if (Input.Type.Equals("Client"))
+                    {
+                        return RedirectToAction("Create", "Client", new {id=user.Id });
+                    }
+                    else{
+                        return RedirectToAction("Create", "Banker", new { id = user.Id });
+                    }
                     return LocalRedirect(returnUrl);
                   //  }
                 }

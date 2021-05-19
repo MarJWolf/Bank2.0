@@ -5,9 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>@User.Identity.Name 's actions</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register a new account</a>
 </p>
-<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+
+<p>
+    <a class="nav-link text-dark"  asp-action="ViewAll">View all accounts</a>
+</p>
