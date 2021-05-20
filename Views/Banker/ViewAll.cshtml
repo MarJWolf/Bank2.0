@@ -1,11 +1,16 @@
-﻿@using  Bank.Areas.Identity.Data
+﻿@using  Bank.Models
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Details</h1>
-
+<!--
+    da se dropne bazata danni
+    da se popravi delete
+    da se pregleda edit
+    da se proveri rabotata na view all i details
+-->
 <div>
     <h4>Users</h4>
     <hr />
@@ -18,23 +23,29 @@
                 <th>
                     Type
                 </th>
+                <th>
+                    Name
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in (List<AccountUser>)ViewData["AllCashiers"])
+            @foreach (var item in (List<Employee>)ViewData["AllCashiers"])
             {
                 <tr>
                     <td>
-                        @item.UserName
+                        @item.user.UserName
                     </td>
                     <td>
                         Cashier
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        @item.NAME
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     </td>
                 </tr>
             }
@@ -43,42 +54,48 @@
                 <td></td>
                 <td></td>
             </tr>
-            @foreach (var item in (List<AccountUser>)ViewData["AllBankers"])
+            @foreach (var item in (List<Employee>)ViewData["AllBankers"])
             {
-                <tr>
-                    <td>
-                        @item.UserName
-                    </td>
-                    <td>
-                        Banker
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+        <tr>
+            <td>
+                @item.user.UserName
+            </td>
+            <td>
+                Banker
+            </td>
+            <td>
+                @item.NAME
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
             }
             <tr>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
-            @foreach (var item in (List<AccountUser>)ViewData["AllClients"])
+            @foreach (var item in (List<Client>)ViewData["AllClients"])
             {
-                <tr>
-                    <td>
-                        @item.UserName
-                    </td>
-                    <td>
-                        Client
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+        <tr>
+            <td>
+                @item.user.UserName
+            </td>
+            <td>
+                Client
+            </td>
+            <td>
+                @item.NAME
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
             }
         </tbody>
     </table>

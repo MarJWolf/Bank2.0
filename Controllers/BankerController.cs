@@ -34,36 +34,64 @@ namespace Bank.Controllers
         }
 
         // GET: Banker/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .Include(e => e.user)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (employee == null)
+            var vUser = await _userManager.FindByIdAsync(id);
+
+            if (vUser == null)
             {
                 return NotFound();
             }
+            string role =  _userManager.GetRolesAsync(vUser).Result.First();
 
-            return View(employee);
+            switch (role){
+
+                case "Client":
+                    int clientId = _context.Client.Where(v => v.UserId == id).FirstOrDefault().ID;
+                    return RedirectToAction("Details", "Client", new { Id =  clientId});
+                case "Banker":
+                case "Cashier":
+                default:
+                    var employee = _context.Employee.Where(v => v.UserId == id).FirstOrDefault();
+                    return View(employee);
+            }
         }
 
 
         //a second one 
         public async Task<IActionResult> ViewAll()
         {
-            //var applicationDbContext = _context.Employee.Include(e => e.user);
-           // _userManager.IsInRoleAsync("Client");
-            var Clients = await _userManager.GetUsersInRoleAsync("Client");
-            ViewData["AllClients"] = Clients.ToList();
-            var Bankers = await _userManager.GetUsersInRoleAsync("Banker");
-            ViewData["AllBankers"] = Bankers.ToList();
-            var Cashiers = await _userManager.GetUsersInRoleAsync("Cashier");
-            ViewData["AllCashiers"] = Cashiers.ToList();
+            var UserClients = await _userManager.GetUsersInRoleAsync("Client");
+            List<Client> clients = new List<Client>();
+            foreach (AccountUser item in UserClients) {
+                var temp = _context.Client.Where(v => v.UserId == item.Id).FirstOrDefault();
+                temp.user = item;
+                clients.Add(temp);
+            }
+            ViewData["AllClients"] = clients;
+            var UserBankers = await _userManager.GetUsersInRoleAsync("Banker");
+            List<Employee> bankers = new List<Employee>();
+            foreach (AccountUser item in UserBankers)
+            {
+                var temp = _context.Employee.Where(v => v.UserId == item.Id).FirstOrDefault();
+                temp.user = item;
+                bankers.Add(temp);
+            }
+            ViewData["AllBankers"] = bankers;
+            var UserCashiers = await _userManager.GetUsersInRoleAsync("Cashier");
+            List<Employee> cashiers = new List<Employee>();
+            foreach (AccountUser item in UserCashiers)
+            {
+                var temp = _context.Employee.Where(v => v.UserId == item.Id).FirstOrDefault();
+                temp.user = item;
+                cashiers.Add(temp);
+            }
+            ViewData["AllCashiers"] = cashiers;
             return View();
         }
 
