@@ -4,16 +4,20 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!--
-    predavane na specifikacii - proverka dali sa tochnite i ako ima greshen element da vrushta na stranicata
-    syzdavane na tranzakciq
-
--->
 
 
 @if (Model == null)
 {
+
     <h1>Choose specifications</h1>
+
+    if (ViewData["error"] != null)
+    {
+
+        <div class="alert-danger">
+            <p name="empID" class="control-label">@ViewData["error"]</p>
+        </div>
+    }
 
     <form asp-action="ViewAll" method="post">
 
@@ -27,9 +31,12 @@
             <select name="bankAccID" class="form-control" asp-items="ViewBag.BankAccId"></select>
         </div>
 
-        <input type="datetime" class="form-control" name="transTime"/>
+        <div class="form-group">
+            <label name="bankAccID" class="control-label">Date of transaction</label>
+            <input type="date" class="form-control" name="transTime" />
+        </div>
 
-        <input type="submit" value="Search" class="btn btn-primary"/>
+        <input type="submit" value="Search" class="btn btn-primary" />
 
     </form>
 

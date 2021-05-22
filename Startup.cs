@@ -160,28 +160,24 @@ namespace Bank
                     FULL_NAME = "Bulgarian lev"
                 };
                 ContextManager.Currency.Add(Cur);
-                ContextManager.SaveChanges();
                 var Cur2 = new Currency
                 {
                     NAME = "USD",
                     FULL_NAME = "U.S Dolar"
                 };
                 ContextManager.Currency.Add(Cur2);
-                ContextManager.SaveChanges();
                 var Cur3 = new Currency
                 {
                     NAME = "RUB",
                     FULL_NAME = "Russian ruble"
                 };
                 ContextManager.Currency.Add(Cur3);
-                ContextManager.SaveChanges();
                 var Cur4 = new Currency
                 {
                     NAME = "EUR",
                     FULL_NAME = "Euro"
                 };
                 ContextManager.Currency.Add(Cur4);
-                ContextManager.SaveChanges();
                 var Cur5 = new Currency
                 {
                     NAME = "GBP",

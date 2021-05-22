@@ -34,15 +34,23 @@ namespace Bank.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ViewAll(string empID, string bankAccID, DateTime transTime)
+        public async Task<IActionResult> ViewAll(string empID, string bankAccID, DateTime? transTime)
         {
-            if (empID != null && bankAccID != null && transTime != null)
+
+            if (bankAccID != null && transTime != null)
             {
-                //pay attention to this lil hoe better tomm 
-                var applicationDbContext = _context.Transaction.Where(v => v.EmployeeId == int.Parse(empID) && v.BankAccId == int.Parse(bankAccID) && v.DATE == transTime);
+                IQueryable<Transaction> applicationDbContext;
+                if (empID != null) {
+                    applicationDbContext = _context.Transaction.Where(v => v.EmployeeId == int.Parse(empID) && v.BankAccId == int.Parse(bankAccID) && v.DATE == transTime);
+                    return View(await applicationDbContext.ToListAsync());
+                }
+
+                applicationDbContext = _context.Transaction.Where(v => v.BankAccId == int.Parse(bankAccID) && v.DATE == transTime);
+
                 return View(await applicationDbContext.ToListAsync());
             }
             else {
+                ViewData["error"] = "Some of the fields are empty!";
                 return View();
             }
            
@@ -71,12 +79,12 @@ namespace Bank.Controllers
         public IActionResult Create()
         {
             ViewData["EmployeeId"] = new SelectList(_context.Employee, "ID", "ID");
+            ViewData["BankAccId"] = new SelectList(_context.BankAccount, "ID", "ID");
+            ViewData["TransName"] = new SelectList(_context.TransactionCategory, "NAME", "NAME");
             return View();
         }
 
         // POST: Cashier/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,TransCatId,SUM,DATE,EmployeeId,BankAccId")] Transaction transaction)
