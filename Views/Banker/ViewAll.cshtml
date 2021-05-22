@@ -5,12 +5,6 @@
 }
 
 <h1>Details</h1>
-<!--
-    da se dropne bazata danni
-    da se popravi delete
-    da se pregleda edit
-    da se proveri rabotata na view all i details
--->
 <div>
     <h4>Users</h4>
     <hr />
@@ -43,7 +37,7 @@
                         @item.NAME
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     </td>
@@ -67,7 +61,7 @@
                 @item.NAME
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
@@ -91,7 +85,7 @@
                 @item.NAME
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bank.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210501155047_start")]
-    partial class start
+    [Migration("20210521151122_proj")]
+    partial class proj
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,16 +115,16 @@ namespace Bank.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccTypeId")
+                    b.Property<int?>("AccTypeId")
                         .HasColumnType("int");
 
                     b.Property<float>("BALANCE")
                         .HasColumnType("real");
 
-                    b.Property<int>("ClientId")
+                    b.Property<int?>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CurrencyId")
+                    b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<float>("INTEREST")
@@ -365,21 +365,15 @@ namespace Bank.Migrations
                 {
                     b.HasOne("Bank.Models.AccountType", "acctype")
                         .WithMany()
-                        .HasForeignKey("AccTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccTypeId");
 
                     b.HasOne("Bank.Models.Client", "client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("Bank.Models.Currency", "currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrencyId");
 
                     b.Navigation("acctype");
 

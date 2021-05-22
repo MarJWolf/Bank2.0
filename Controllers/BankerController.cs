@@ -186,19 +186,11 @@ namespace Bank.Controllers
         // GET: Banker/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            var employee =  _context.Employee.Where(v => v.ID == id).FirstOrDefault();
+            if (id == null || employee == null)
             {
                 return NotFound();
             }
-
-            var employee = await _context.Employee
-                .Include(e => e.user)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
             return View(employee);
         }
 
@@ -209,6 +201,11 @@ namespace Bank.Controllers
         {
             var employee = await _context.Employee.FindAsync(id);
             _context.Employee.Remove(employee);
+            var user = await _userManager.FindByIdAsync(employee.UserId);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

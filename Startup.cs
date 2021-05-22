@@ -89,6 +89,8 @@ namespace Bank
             //initializing custom roles 
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<AccountUser>>();
+            var ContextManager = serviceProvider.GetRequiredService<ApplicationDbContext>();
+
             string[] roleNames = { "Banker", "Cashier", "Client"};
             IdentityResult roleResult;
 
@@ -129,7 +131,25 @@ namespace Bank
                     await UserManager.DeleteAsync(poweruser);
                     throw new Exception("Error while creating admin!");
                 }
+
             }
+            var MainAcc = ContextManager.Employee.Where(v => v.UserId == _user.Id).FirstOrDefault();
+            if (MainAcc == null || MainAcc.UserId != _user.Id )
+            {
+                //Here you could create the super admin who will maintain the web app but his employee part
+                var powerEmployee = new Employee
+                {
+                    NAME = "Emily Phoreas",
+                    PN = "634",
+                    user = _user,
+                    UserId = _user.Id
+                };
+
+               ContextManager.Employee.Add(powerEmployee);
+               ContextManager.SaveChanges();
+
+            }
+
         }
     }
 }

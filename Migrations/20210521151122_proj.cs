@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bank.Migrations
 {
-    public partial class start : Migration
+    public partial class proj : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -225,11 +225,11 @@ namespace Bank.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    CurrencyId = table.Column<int>(type: "int", nullable: true),
                     INTEREST = table.Column<float>(type: "real", nullable: false),
                     BALANCE = table.Column<float>(type: "real", nullable: false),
-                    ClientId = table.Column<int>(type: "int", nullable: false),
-                    AccTypeId = table.Column<int>(type: "int", nullable: false)
+                    ClientId = table.Column<int>(type: "int", nullable: true),
+                    AccTypeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,21 +240,21 @@ namespace Bank.Migrations
                         principalSchema: "Identity",
                         principalTable: "AccountType",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_BankAccount_Client_ClientId",
                         column: x => x.ClientId,
                         principalSchema: "Identity",
                         principalTable: "Client",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_BankAccount_Currency_CurrencyId",
                         column: x => x.CurrencyId,
                         principalSchema: "Identity",
                         principalTable: "Currency",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

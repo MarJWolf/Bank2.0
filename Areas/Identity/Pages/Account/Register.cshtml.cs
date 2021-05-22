@@ -83,9 +83,9 @@ namespace Bank.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync()//string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");//trqbva da vrushta kum glavniq page na bankera?
+            //returnUrl ??= Url.Content("~/");//trqbva da vrushta kum glavniq page na bankera?
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -124,7 +124,7 @@ namespace Bank.Areas.Identity.Pages.Account
                     else{
                         return RedirectToAction("Create", "Banker", new { id = user.Id });
                     }
-                    return LocalRedirect(returnUrl);
+                    //return LocalRedirect(returnUrl);
                   //  }
                 }
                 foreach (var error in result.Errors)
