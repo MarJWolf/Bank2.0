@@ -133,6 +133,7 @@ namespace Bank
                 }
 
             }
+
             var MainAcc = ContextManager.Employee.Where(v => v.UserId == _user.Id).FirstOrDefault();
             if (MainAcc == null || MainAcc.UserId != _user.Id )
             {
@@ -148,6 +149,76 @@ namespace Bank
                ContextManager.Employee.Add(powerEmployee);
                ContextManager.SaveChanges();
 
+            }
+
+            var CurEx = ContextManager.Currency.Where(v => v.NAME == "BGN").FirstOrDefault();
+            if (CurEx == null )
+            {
+                var Cur = new Currency
+                {
+                    NAME = "BGN",
+                    FULL_NAME = "Bulgarian lev"
+                };
+                ContextManager.Currency.Add(Cur);
+                ContextManager.SaveChanges();
+                var Cur2 = new Currency
+                {
+                    NAME = "USD",
+                    FULL_NAME = "U.S Dolar"
+                };
+                ContextManager.Currency.Add(Cur2);
+                ContextManager.SaveChanges();
+                var Cur3 = new Currency
+                {
+                    NAME = "RUB",
+                    FULL_NAME = "Russian ruble"
+                };
+                ContextManager.Currency.Add(Cur3);
+                ContextManager.SaveChanges();
+                var Cur4 = new Currency
+                {
+                    NAME = "EUR",
+                    FULL_NAME = "Euro"
+                };
+                ContextManager.Currency.Add(Cur4);
+                ContextManager.SaveChanges();
+                var Cur5 = new Currency
+                {
+                    NAME = "GBP",
+                    FULL_NAME = "U.K pound"
+                };
+                ContextManager.Currency.Add(Cur5);
+                ContextManager.SaveChanges();
+            }
+
+            //razplashtatelna,  spestovna,  depozitna
+            var AccTypeEx = ContextManager.AccountType.Where(v => v.NAME == "Current Account").FirstOrDefault();
+            if (AccTypeEx == null)
+            {
+                var AccType = new AccountType
+                {
+                    NAME = "Current Account",
+                    LIHVA = 0,
+                    MESECHNA_TAKSA = 2.50
+                };
+                ContextManager.AccountType.Add(AccType);
+                ContextManager.SaveChanges();
+                var AccType2 = new AccountType
+                {
+                    NAME = "Saving Account",
+                    LIHVA = 7.5,
+                    MESECHNA_TAKSA = 1.0
+                };
+                ContextManager.AccountType.Add(AccType2);
+                ContextManager.SaveChanges();
+                var AccType3 = new AccountType
+                {
+                    NAME = "Deposit Account",
+                    LIHVA = 0,
+                    MESECHNA_TAKSA = 5.00
+                };
+                ContextManager.AccountType.Add(AccType3);
+                ContextManager.SaveChanges();
             }
 
         }
