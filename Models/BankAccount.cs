@@ -14,8 +14,6 @@ namespace Bank.Models
         public virtual Currency currency { get; set; }
         
         public int? CurrencyId { get; set; }
-        [Range(1,10)]
-        public float INTEREST { get; set; }
 
         public float BALANCE { get; set; }
 

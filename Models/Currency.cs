@@ -9,8 +9,10 @@ namespace Bank.Models
     {
         public int ID { get; set; }
 
-        public String NAME { get; set; }
+        public string NAME { get; set; }
 
-        public String FULL_NAME { get; set; }
+        public string FULL_NAME { get; set; }
+
+        public double FIXED_RATE { get; set; }
     }
 }

@@ -12,10 +12,11 @@ namespace Bank.Models
     {
         public int ID { get; set; }
         public string NAME { get; set; }
-        
-        public double LIHVA { get; set; }
 
-        public double MESECHNA_TAKSA { get; set; }
+        [Range(1, 10)]
+        public float INTEREST { get; set; }
+
+        public double TAX { get; set; }
 
     }
 }

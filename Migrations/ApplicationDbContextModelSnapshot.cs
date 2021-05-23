@@ -17,7 +17,7 @@ namespace Bank.Migrations
             modelBuilder
                 .HasDefaultSchema("Identity")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Bank.Areas.Identity.Data.AccountUser", b =>
@@ -92,14 +92,14 @@ namespace Bank.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("LIHVA")
-                        .HasColumnType("float");
-
-                    b.Property<double>("MESECHNA_TAKSA")
-                        .HasColumnType("float");
+                    b.Property<float>("INTEREST")
+                        .HasColumnType("real");
 
                     b.Property<string>("NAME")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TAX")
+                        .HasColumnType("float");
 
                     b.HasKey("ID");
 
@@ -124,9 +124,6 @@ namespace Bank.Migrations
 
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
-
-                    b.Property<float>("INTEREST")
-                        .HasColumnType("real");
 
                     b.HasKey("ID");
 
@@ -176,6 +173,9 @@ namespace Bank.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("FIXED_RATE")
+                        .HasColumnType("float");
 
                     b.Property<string>("FULL_NAME")
                         .HasColumnType("nvarchar(max)");

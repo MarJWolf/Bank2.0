@@ -18,8 +18,8 @@ namespace Bank.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LIHVA = table.Column<double>(type: "float", nullable: false),
-                    MESECHNA_TAKSA = table.Column<double>(type: "float", nullable: false)
+                    INTEREST = table.Column<float>(type: "real", nullable: false),
+                    TAX = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,7 +60,8 @@ namespace Bank.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FULL_NAME = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    FULL_NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FIXED_RATE = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -226,7 +227,6 @@ namespace Bank.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyId = table.Column<int>(type: "int", nullable: true),
-                    INTEREST = table.Column<float>(type: "real", nullable: false),
                     BALANCE = table.Column<float>(type: "real", nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: true),
                     AccTypeId = table.Column<int>(type: "int", nullable: true)
