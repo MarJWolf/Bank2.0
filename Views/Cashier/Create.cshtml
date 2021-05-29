@@ -8,31 +8,32 @@
 <h1>Create</h1>
 
 <h4>Transaction</h4>
-<hr/>
+    @if (ViewData["error"] != null)
+    {
+        <div class="alert-danger">
+            <p name="empID" class="control-label">@ViewData["error"]</p>
+        </div>
+    }
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="TransCatId" class="control-label"></label>
-                <select asp-for="TransCatId" class="form-control" asp-items="ViewBag.TransName"></select>
+                <label asp-for="TransCatId" class="control-label">Transaction Category</label>
+                <select asp-for="TransCatId" class="form-control" asp-items="ViewBag.TransCatId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="SUM" class="control-label"></label>
+                <label asp-for="SUM" class="control-label">Sum of transaction</label>
                 <input asp-for="SUM" class="form-control" />
                 <span asp-validation-for="SUM" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DATE" class="control-label"></label>
-                <input asp-for="DATE" type="date" class="form-control" />
+                <label asp-for="EmployeeId" class="control-label">Employee ID</label>
+                <input asp-for="EmployeeId" type="text" readonly class="form-control" value="@ViewData["EmployeeId"]">
             </div>
             <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class ="form-control" asp-items="ViewBag.EmployeeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BankAccId" class="control-label"></label>
+                <label asp-for="BankAccId" class="control-label">Bank account number</label>
                 <select asp-for="BankAccId" class="form-control" asp-items="ViewBag.BankAccId"></select>
             </div>
             <div class="form-group">

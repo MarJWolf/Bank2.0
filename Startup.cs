@@ -287,8 +287,8 @@ namespace Bank
 
 
                 var ClientNow = await ContextManager.Client.Where(v => v.EGN == "8706065400").FirstAsync();
-                var CurrCur = await ContextManager.Currency.Where(v => v.ID == 0).FirstAsync();
-                var CurrAccType = await ContextManager.AccountType.Where(v => v.ID == 0).FirstAsync();
+                var CurrCur = await ContextManager.Currency.Where(v => v.ID == 1).FirstAsync();
+                var CurrAccType = await ContextManager.AccountType.Where(v => v.ID == 1).FirstAsync();
                 var BankAccEx = new BankAccount
                 {
                     CurrencyId = 0,

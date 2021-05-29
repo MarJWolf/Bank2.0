@@ -91,8 +91,8 @@ namespace Bank.Areas.Identity.Pages.Account
                     var user = await _userManager.FindByNameAsync(Input.UserName);
                     IList<string> roles = await _userManager.GetRolesAsync(user);
                     if (roles.Contains("Banker")) { returnUrl = "~/Banker" ; 
-                    } else if (roles.Contains("Cashier")) { returnUrl ??= Url.Content("~/Cashier/MainCashierPage"); 
-                    } else if (roles.Contains("Client")) { returnUrl ??= Url.Content("~/Client/MainClientPage"); }
+                    } else if (roles.Contains("Cashier")) { returnUrl ??= Url.Content("~/Cashier"); 
+                    } else if (roles.Contains("Client")) { returnUrl ??= Url.Content("~/Client"); }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
