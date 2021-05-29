@@ -119,75 +119,49 @@ namespace Bank.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", employee.UserId);
             return View(employee);
         }
-        
-        public async Task<IActionResult> CreateBankAcc([Bind("INTEREST,BALANCE,CurrencyId,ClientId,AccTypeId")] BankAccount BA)
+
+        // GET: BankAccount/Create
+        public IActionResult CreateBankAcc(string clientID)
         {
+            ViewData["CurrencyId"] = new SelectList(_context.Currency, "ID", "FULL_NAME");
+            ViewData["AccTypeId"] = new SelectList(_context.AccountType, "ID", "NAME");
+            if (clientID != null) {
+                ViewData["ClientIdOne"] = clientID;
+            }
+            else { ViewData["ClientId"] = new SelectList(_context.Client, "ID", "ID"); }
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBankAcc([Bind("BALANCE,CurrencyId,ClientId,AccTypeId")] BankAccount BA)
+        {
+
             if (ModelState.IsValid)
             {
-                _context.Add(BA);
+                if (BA.BALANCE < 0) {
+                    ViewData["CurrencyId"] = new SelectList(_context.Currency, "ID", "FULL_NAME");
+                    ViewData["AccTypeId"] = new SelectList(_context.AccountType, "ID", "NAME");
+                    ViewData["ClientIdOne"] = BA.ClientId;
+                    ViewData["error"] = "Some fields have incorrect input!";
+                    return View();
+                }
+                _context.BankAccount.Add(BA);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(BA);
+            ViewData["CurrencyId"] = new SelectList(_context.Currency, "ID", "FULL_NAME");
+            ViewData["AccTypeId"] = new SelectList(_context.AccountType, "ID", "NAME");
+            ViewData["ClientIdOne"] = BA.ClientId;
+            ViewData["error"] = "Some fields have incorrect input!";
+            return View();
         }
-
-        // GET: Banker/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", employee.UserId);
-            return View(employee);
-        }
-
-        // POST: Banker/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,NAME,PN,UserId")] Employee employee)
-        {
-            if (id != employee.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", employee.UserId);
-            return View(employee);
-        }
-
+        
         // GET: Banker/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
-            var employee =  _context.Employee.Where(v => v.ID == id).FirstOrDefault();
+            var employee = _context.Employee.Where(v => v.ID == id).FirstOrDefault();
             if (id == null || employee == null)
             {
                 return NotFound();

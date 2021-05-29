@@ -19,26 +19,26 @@
         </div>
     }
 
-    <form asp-action="ViewAll" method="post">
+<form asp-action="ViewAll" method="post">
 
-        <div class="form-group">
-            <label name="empID" class="control-label">Employee Id</label>
-            <select name="empID" class="form-control" asp-items="ViewBag.EmployeeId"></select>
-        </div>
+    <div class="form-group">
+        <label name="bankAccID" class="control-label">Bank Account Id</label>
+        <select name="bankAccID" class="form-control" asp-items="ViewBag.BankAccId"></select>
+    </div>
 
-        <div class="form-group">
-            <label name="bankAccID" class="control-label">Bank Account Id</label>
-            <select name="bankAccID" class="form-control" asp-items="ViewBag.BankAccId"></select>
-        </div>
+    <div class="form-group">
+        <label class="control-label">Date from</label>
+        <input type="date" class="form-control" name="transTimeFrom" />
+    </div>
 
-        <div class="form-group">
-            <label name="bankAccID" class="control-label">Date of transaction</label>
-            <input type="date" class="form-control" name="transTime" />
-        </div>
+    <div class="form-group">
+        <label  class="control-label">Date to</label>
+        <input type="date" class="form-control" name="transTimeTo" />
+    </div>
 
-        <input type="submit" value="Search" class="btn btn-primary" />
+    <input type="submit" value="Search" class="btn btn-primary" />
 
-    </form>
+</form>
 
 }
 else
@@ -50,19 +50,19 @@ else
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.TransCatId)
+                    Transaction type
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.SUM)
+                    Sum of transaction
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.DATE)
+                    Date of transaction
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.employee)
+                    Employee ID
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.BankAccId)
+                    Bank account ID
                 </th>
                 <th></th>
             </tr>
@@ -72,7 +72,14 @@ else
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TransCatId)
+                        @if (item.TransCatId == 1)
+                        {
+                            <p>Deposit</p>
+                        }
+                        else
+                        {
+                            <p>Withdrawal</p>
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.SUM)
@@ -81,15 +88,10 @@ else
                         @Html.DisplayFor(modelItem => item.DATE)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.employee.ID)
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.BankAccId)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     </td>
                 </tr>
             }

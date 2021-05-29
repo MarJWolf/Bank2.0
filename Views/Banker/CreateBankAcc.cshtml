@@ -5,34 +5,44 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Employee</h4>
+<h1>Create a bank account</h1>
 <hr />
+    @if (ViewData["error"] != null)
+    {
+        <div class="alert-danger">
+            <p name="empID" class="control-label">@ViewData["error"]</p>
+        </div>
+    }
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="CreateBankAcc">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*@@Html.DisplayFor(v => v.ID )*@
             <div class="form-group">
                 <label asp-for="BALANCE" class="control-label"></label>
                 <input asp-for="BALANCE" class="form-control" />
                 <span asp-validation-for="BALANCE" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CurrencyId" class="control-label"></label>
-                <input asp-for="CurrencyId" class="form-control" />
-                <span asp-validation-for="CurrencyId" class="text-danger"></span>
+                <label name="CurrencyId" class="control-label">Choose type of currency</label>
+                <select name="CurrencyId" class="form-control" asp-items="ViewBag.CurrencyId"></select>
             </div>
+            @if (ViewData["ClientIdOne"] != null)
+            {
+                <div class="form-group">
+                    <label asp-for="ClientId" class="control-label">Client ID</label>
+                    <input asp-for="ClientId" type="text" readonly class="form-control" value="@ViewData["ClientIdOne"]">
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label name="ClientId" class="control-label">Choose a client</label>
+                    <select name="ClientId" class="form-control" asp-items="ViewBag.ClientId"></select>
+                </div>
+            }
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
-                <input asp-for="ClientId" class="form-control" />
-                <span asp-validation-for="ClientId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AccTypeId" class="control-label"></label>
-                <input asp-for="AccTypeId" class="form-control" />
-                <span asp-validation-for="AccTypeId" class="text-danger"></span>
+                <label name="AccTypeId" class="control-label">Choose the type of account</label>
+                <select name="AccTypeId" class="form-control" asp-items="ViewBag.AccTypeId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -40,11 +50,6 @@
         </form>
     </div>
 </div>
-
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to actions</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
