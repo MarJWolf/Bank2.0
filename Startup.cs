@@ -200,7 +200,7 @@ namespace Bank
                 ContextManager.AccountType.Add(AccType);
                 var AccType2 = new AccountType
                 {
-                    NAME = "Saving Account",
+                    NAME = "Savings Account",
                     INTEREST = 7,
                     TAX = 1.0
                 };
