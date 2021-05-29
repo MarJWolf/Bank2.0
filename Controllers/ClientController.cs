@@ -7,23 +7,43 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bank.Data;
 using Bank.Models;
+using Bank.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bank.Controllers
 {
     public class ClientController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<AccountUser> _userManager;
 
-        public ClientController(ApplicationDbContext context)
+        public ClientController(ApplicationDbContext context, UserManager<AccountUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Client
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Client.Include(c => c.user);
-            return View(await applicationDbContext.ToListAsync());
+            var user = _userManager.GetUserAsync(User).Result;
+
+            var currentClient = _context.Client.Where(p => p.UserId == user.Id).FirstOrDefault();
+
+            var clientBankAcc = _context.BankAccount.Where(c => c.ClientId == currentClient.ID).ToList();
+
+            List<BankAccount> legitBankAccounts = new List<BankAccount>();
+
+            foreach (BankAccount item in clientBankAcc)
+            {
+                var temp = item;
+                temp.currency = _context.Currency.Where(v => v.ID == item.CurrencyId).FirstOrDefault();
+                temp.acctype = _context.AccountType.Where(v => v.ID == item.AccTypeId).FirstOrDefault();
+                legitBankAccounts.Add(temp);
+           
+            }
+
+            return View(legitBankAccounts);
         }
 
         // GET: Client/Details/5

@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Bank.Models.Client>
+﻿@model IEnumerable<Bank.Models.BankAccount>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Your Bank Accounts:</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,40 +13,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EGN)
+                Bank Account ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NAME)
+                Currency
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.address)
+                Balance
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PN)
+                Account Type
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.user)
+                Transaction History
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model ) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.EGN)
+                @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NAME)
+                @Html.DisplayFor(modelItem => item.currency.FULL_NAME)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.address)
+                @Html.DisplayFor(modelItem => item.BALANCE)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PN)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.user.Id)
+                @Html.DisplayFor(modelItem => item.acctype.NAME)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
