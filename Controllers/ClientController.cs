@@ -65,10 +65,12 @@ namespace Bank.Controllers
             {
                 _context.Add(client); //zapisva v bazata danni
                 await _context.SaveChangesAsync(); //zapisva v context
-                return RedirectToAction(nameof(Index)); //otiva v index
+                //return RedirectToAction(nameof(Index)); //otiva v stranica index na klienta
+                return RedirectToAction("CreateBankAcc", "Banker", new { clientID = client.ID });
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", client.UserId);
-            return View(client);
+            return View(client);// vrushta sushtata stranica, no s id-tata na klientite zaredeni veche kato spisak
+            //tova e return-a pri error
         }
 
         // GET: Client/Edit/5
