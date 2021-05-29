@@ -49,6 +49,8 @@ namespace Bank.Controllers
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["CurrencyId"] = new SelectList(_context.Currency, "ID", "ID");
+            ViewData["AccTypeId"] = new SelectList(_context.AccountType, "ID", "ID");
             return View();
         }
 
@@ -57,13 +59,13 @@ namespace Bank.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,EGN,NAME,address,PN,UserId")] Client client)
+        public async Task<IActionResult> Create([Bind("EGN,NAME,address,PN,UserId")] Client client)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(client);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Add(client); //zapisva v bazata danni
+                await _context.SaveChangesAsync(); //zapisva v context
+                return RedirectToAction(nameof(Index)); //otiva v index
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", client.UserId);
             return View(client);
