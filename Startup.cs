@@ -117,7 +117,8 @@ namespace Bank
                 {
                     UserName = "Admin",
                     Email = "admin@email.com",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    notif = false
                 };
                 string adminPassword = "Admin1234!";
 
@@ -241,8 +242,9 @@ namespace Bank
                 var User = new AccountUser
                 {
                     UserName = "Client1",
-                    Email = "admin2@email.com",
-                    EmailConfirmed = true
+                    Email = "martinksssss@gmail.com",
+                    EmailConfirmed = true,
+                    notif = true
                 };
                 string adminPassword = "Admin1234!";
                 var createPowerUser = await UserManager.CreateAsync(User, adminPassword);

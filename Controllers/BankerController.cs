@@ -113,6 +113,7 @@ namespace Bank.Controllers
             {
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", employee.UserId);

@@ -23,8 +23,16 @@
 
     <div class="form-group">
         <label name="bankAccID" class="control-label">Bank Account Id</label>
-        <select name="bankAccID" class="form-control" asp-items="ViewBag.BankAccId"></select>
-    </div>
+        @if (ViewData["bankAccIDSpecial"] != null)
+        {
+            <input type="text" class="form-control" name="bankAccID" readonly value="@ViewData["bankAccIDSpecial"]" />
+        }
+        else
+        {
+            <select name="bankAccID" class="form-control" asp-items="ViewBag.BankAccId"></select>
+        }
+    </div
+>
 
     <div class="form-group">
         <label class="control-label">Date from</label>

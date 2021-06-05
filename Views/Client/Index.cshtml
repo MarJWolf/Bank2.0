@@ -6,9 +6,6 @@
 
 <h1>Your Bank Accounts:</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -46,9 +43,10 @@
                 @Html.DisplayFor(modelItem => item.acctype.NAME)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <form asp-action="ViewAll" asp-controller="Cashier" method="get">
+                    <input type="hidden" name="bankAccIDSpecial" id="bankAccIDSpecial" value="@item.ID.ToString()">
+                    <button type="submit">View transactions</button>
+                </form>
             </td>
         </tr>
 }
