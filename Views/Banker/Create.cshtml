@@ -9,6 +9,12 @@
 
 <h4>Employee</h4>
 <hr />
+@if (ViewData["error"] != null)
+{
+    <div class="alert-danger">
+        <p name="empID" class="control-label">@ViewData["error"]</p>
+    </div>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -19,12 +25,12 @@
                 <span asp-validation-for="NAME" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label  class="control-label">Phone number</label>
+                <label class="control-label">Phone number</label>
                 <input asp-for="PN" class="form-control" />
                 <span asp-validation-for="PN" class="text-danger"></span>
             </div>
             <div>
-                <input asp-for="UserId" type="hidden" value="@ViewData["UserId"]"/>
+                <input asp-for="UserId" type="hidden" value="@ViewData["UserId"]" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

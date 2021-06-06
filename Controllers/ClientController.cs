@@ -81,6 +81,26 @@ namespace Bank.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EGN,NAME,address,PN,UserId")] Client client)
         {
+            int[] tegla  = new int [9] { 2, 4, 8, 5, 10, 9, 7, 3, 6 };
+            int lastnum = 0;
+            for(int i = 0; i < 9; i++)
+            {
+                lastnum += int.Parse(client.EGN.Substring(i, 1)) * tegla[i];
+            }
+            lastnum = lastnum % 11;
+            if (lastnum == 10) { lastnum = 0; }
+            if (lastnum != int.Parse(client.EGN.Substring(9, 1))){
+                ViewData["UserId"] = client.UserId;
+                ViewData["error"] = "EGN was input incorrectly!";
+                return View(client);
+            }
+
+            if (client.PN.Substring(0, 1) != "+") {
+                ViewData["UserId"] = client.UserId;
+                ViewData["error"] = "Phone number is incorrect!";
+                return View(client);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(client); //zapisva v bazata danni
@@ -88,9 +108,9 @@ namespace Bank.Controllers
                 //return RedirectToAction(nameof(Index)); //otiva v stranica index na klienta
                 return RedirectToAction("CreateBankAcc", "Banker", new { clientID = client.ID });
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", client.UserId);
-            return View(client);// vrushta sushtata stranica, no s id-tata na klientite zaredeni veche kato spisak
-            //tova e return-a pri error
+            ViewData["UserId"] = client.UserId;
+            ViewData["error"] = "Client data incorrect!";
+            return View(client);
         }
 
 

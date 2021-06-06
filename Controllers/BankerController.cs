@@ -109,6 +109,12 @@ namespace Bank.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("NAME,PN,UserId")] Employee employee)
         {
+            if (employee.PN.Substring(0, 1) != "+")
+            {
+                ViewData["UserId"] = employee.UserId;
+                ViewData["error"] = "Phone number is incorrect!";
+                return View(employee);
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
@@ -116,7 +122,8 @@ namespace Bank.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", employee.UserId);
+            ViewData["UserId"] = employee.UserId;
+            ViewData["error"] = "Employee data incorrect!";
             return View(employee);
         }
 
