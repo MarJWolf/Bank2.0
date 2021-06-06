@@ -6,10 +6,32 @@
 
 <h1>@User.Identity.Name's actions</h1>
 
-<form asp-action="ViewAll" method="get">
-    <button class="btn-danger">View all transactions</button>
-</form>
 
-<form asp-action="Create" method="get">
-    <button class="btn-danger">Create a transaction</button>
-</form>
+<style>
+    .cashier{
+        margin-top:50px;
+        padding-inline:auto;
+        padding-top:10px;
+        padding-bottom:10px;
+        padding-left:15px;
+        padding-right:15px;
+    }
+</style>
+
+
+
+
+<div class="container-banker">
+    <div class="row">
+        <div class="col-lg justify-content-center">
+            <form asp-action="ViewAll" method="get">
+                <button class="cashier btn-primary">View all transactions</button>
+            </form>
+        </div>
+        <div class="col-lg">
+            <form asp-action="Create" method="get">
+                <button class="cashier btn-primary">Create a transaction</button>
+            </form>
+        </div>
+    </div>
+</div>

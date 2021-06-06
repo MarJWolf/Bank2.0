@@ -4,14 +4,63 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@User.Identity.Name's actions</h1>
 
-<form asp-area="Identity" asp-page="/Account/Register" method="get" >
-    <button class="btn-danger" >Register a new account</button>
-</form>
-<form asp-action="ViewAll" method="get">
-    <button class="nav-link text-dark" asp-action="ViewAll">View all accounts</button>
-</form>
-<form asp-action="CreateBankAcc" method="get">
-    <button class="nav-link text-dark" asp-action="CreateBankAcc">Create bank account</button>
-</form>
+<style>
+
+    body {
+        background-color: #151b29;
+    }
+
+    .container-banker{
+      
+    }
+
+    .bankButton {
+        margin-top: 25%;
+        margin-bottom: 25%;
+        margin-left: 15%;
+        margin-right: 15%;
+        font-family: 'Roboto', sans-serif;
+        background: none;
+        color: #ffa260;
+        border: 2px solid;
+        padding: 1em 1em;
+        font-size: 1em;
+        transition: color 0.25s, border-color 0.25s, box-shadow 0.25s,transform 0.25s;
+    }
+
+    .bankButton:hover {
+        border-color: #f1ff5c;
+        color: white;
+        box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+        transform: translateY(-0.25em);
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="bankButton">
+
+    <h1>@User.Identity.Name's actions</h1>
+
+    <div class="container-banker">
+        <div class="row">
+            <div class="col-sm">
+                <form asp-area="Identity" asp-page="/Account/Register" method="get">
+                    <button class="bankButton">Register a new account</button>
+                </form>
+            </div>
+            <div class="col-sm">
+                <form asp-action="ViewAll" method="get">
+                    <button class="bankButton" asp-action="ViewAll">View all accounts              </button>
+                </form>
+            </div>
+            <div class="col-sm">
+                <form asp-action="CreateBankAcc" method="get">
+                    <button class="bankButton" asp-action="CreateBankAcc">Create bank account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

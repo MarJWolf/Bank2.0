@@ -45,7 +45,7 @@
             <td>
                 <form asp-action="ViewAll" asp-controller="Cashier" method="get">
                     <input type="hidden" name="bankAccIDSpecial" id="bankAccIDSpecial" value="@item.ID.ToString()">
-                    <button type="submit">View transactions</button>
+                    <button class="btn btn-primary" type="submit">View transactions</button>
                 </form>
             </td>
         </tr>
