@@ -6,10 +6,10 @@
 
 <h1>@User.Identity.Name's actions</h1>
 
-<p>
-    <a class="nav-link text-dark" asp-action="ViewAll">View all transactions</a>
-</p>
+<form asp-action="ViewAll" method="get">
+    <button class="btn-danger">View all transactions</button>
+</form>
 
-<p>
-    <a class="nav-link text-dark" asp-action="Create">Create a transaction</a>
-</p>
+<form asp-action="Create" method="get">
+    <button class="btn-danger">Create a transaction</button>
+</form>

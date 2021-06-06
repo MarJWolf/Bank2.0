@@ -21,7 +21,9 @@ a {
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
-  border-color: #1861ac;
+  padding : 10px, 10px;
+  border-color: #ff0000;
+  border-style : dotted;
 }
 
 /* Sticky footer styles
@@ -70,11 +72,3 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
-#test {
-
-    border: dotted;
-    border-color: lemonchiffon;
-    background-color: mediumvioletred;
-    border-radius: 10px;
-
-}
