@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
 
 namespace Bank.Areas.Identity.Pages.Account
 {
@@ -74,6 +75,31 @@ namespace Bank.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        protected void SendMail(string CLemail)
+        {
+            MailMessage msg = new MailMessage();
+            SmtpClient client = new SmtpClient();
+            try
+            {
+                msg.Subject = "Log in!";
+                msg.Body = "Your account in TSP - Bank has been logged into! Was this you? If not please contact us at this email!";
+                msg.From = new MailAddress("tspbanktu@gmail.com");
+                msg.To.Add(CLemail);
+                msg.IsBodyHtml = true;
+                client.Host = "smtp.gmail.com";
+                System.Net.NetworkCredential basicauthenticationinfo = new System.Net.NetworkCredential("tspbanktu@gmail.com", "bankirane123");
+                client.Port = int.Parse("587");
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = basicauthenticationinfo;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Send(msg);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+            }
+        }
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -90,11 +116,24 @@ namespace Bank.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     var user = await _userManager.FindByNameAsync(Input.UserName);
                     IList<string> roles = await _userManager.GetRolesAsync(user);
-                    if (roles.Contains("Banker")) { returnUrl = "~/Banker" ; 
-                    } else if (roles.Contains("Cashier")) { returnUrl ??= Url.Content("~/Cashier"); 
-                    } else if (roles.Contains("Client")) { returnUrl ??= Url.Content("~/Client"); }
-                    return LocalRedirect(returnUrl);
+
+                    if (user.notif == true) { SendMail(user.Email); }
+
+                    if (roles.Contains("Banker"))
+                    {
+                        return RedirectToAction("Index", "Banker");
+                    }
+                    else if (roles.Contains("Cashier"))
+                    {
+                        return RedirectToAction("Index", "Cashier");
+                    }
+                    else if (roles.Contains("Client"))
+                    {
+                        return RedirectToAction("Index", "Client");
+                    }
+
                 }
+                
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

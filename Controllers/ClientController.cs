@@ -24,7 +24,7 @@ namespace Bank.Controllers
         }
 
         // GET: Client
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var user = _userManager.GetUserAsync(User).Result;
 
@@ -40,7 +40,7 @@ namespace Bank.Controllers
                 temp.currency = _context.Currency.Where(v => v.ID == item.CurrencyId).FirstOrDefault();
                 temp.acctype = _context.AccountType.Where(v => v.ID == item.AccTypeId).FirstOrDefault();
                 legitBankAccounts.Add(temp);
-           
+
             }
 
             return View(legitBankAccounts);
@@ -66,9 +66,9 @@ namespace Bank.Controllers
         }
 
         // GET: Client/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserId"] = id;
             ViewData["CurrencyId"] = new SelectList(_context.Currency, "ID", "ID");
             ViewData["AccTypeId"] = new SelectList(_context.AccountType, "ID", "ID");
             return View();
@@ -93,58 +93,6 @@ namespace Bank.Controllers
             //tova e return-a pri error
         }
 
-        // GET: Client/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var client = await _context.Client.FindAsync(id);
-            if (client == null)
-            {
-                return NotFound();
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", client.UserId);
-            return View(client);
-        }
-
-        // POST: Client/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,EGN,NAME,address,PN,UserId")] Client client)
-        {
-            if (id != client.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(client);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClientExists(client.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", client.UserId);
-            return View(client);
-        }
 
         // GET: Client/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -171,9 +119,27 @@ namespace Bank.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var client = await _context.Client.FindAsync(id);
+
+            var clientBankAcc = _context.BankAccount.Where(c => c.ClientId == client.ID).ToList();
+
+            foreach (BankAccount item in clientBankAcc)
+            {
+                var trans = _context.Transaction.Where(c => c.BankAccId == item.ID).ToList();
+                foreach (Transaction elem in trans)
+                {
+                    _context.Transaction.Remove(elem);
+                }
+                    _context.BankAccount.Remove(item);
+            }
             _context.Client.Remove(client);
+            var user = await _userManager.FindByIdAsync(client.UserId);
+
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Banker");
         }
 
         private bool ClientExists(int id)

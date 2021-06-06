@@ -30,9 +30,16 @@ namespace Bank.Controllers
             return View();
         }
 
-        public IActionResult ViewAll()
+        public IActionResult ViewAll(string bankAccIDSpecial)
         {
-            ViewData["BankAccId"] = new SelectList(_context.BankAccount, "ID", "ID");
+            if (bankAccIDSpecial != null)
+            { 
+                ViewData["bankAccIDSpecial"] = bankAccIDSpecial; 
+            }
+            else
+            {
+                ViewData["BankAccId"] = new SelectList(_context.BankAccount, "ID", "ID");
+            }
             return View();
         }
 

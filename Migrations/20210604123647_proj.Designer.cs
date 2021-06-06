@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bank.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210523102311_proj")]
+    [Migration("20210604123647_proj")]
     partial class proj
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,9 @@ namespace Bank.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("notif")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

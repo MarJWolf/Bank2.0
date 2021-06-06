@@ -74,6 +74,9 @@ namespace Bank.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Required]
+            [Display(Name = "Notification")]
+            public bool Notification { get; set; }
 
         }
 
@@ -90,7 +93,7 @@ namespace Bank.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AccountUser { UserName = Input.UserName, Email = Input.Email };
+                var user = new AccountUser { UserName = Input.UserName, Email = Input.Email, notif = Input.Notification};
                 user.EmailConfirmed = true;
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
