@@ -73,6 +73,7 @@ namespace Bank.Controllers
                 temp.user = item;
                 clients.Add(temp);
             }
+
             ViewData["AllClients"] = clients;
             var UserBankers = await _userManager.GetUsersInRoleAsync("Banker");
             List<Employee> bankers = new List<Employee>();
