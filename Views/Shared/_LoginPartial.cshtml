@@ -7,7 +7,16 @@
 
 
 <style>
+    #login {
+        border-radius: 20%;
+        background-color: #48bfe3;
+    }
 
+    #logout {
+        border-radius: 25%;
+        padding-top:4px;
+        padding-bottom:4px;
+    }
 </style>
 
 
@@ -47,7 +56,7 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-light btn-success" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

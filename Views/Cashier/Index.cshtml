@@ -1,37 +1,65 @@
 ﻿
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h1>@User.Identity.Name's actions</h1>
+@{ ViewData["Title"] = "Index";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 
 <style>
-    .cashier{
-        margin-top:50px;
-        padding-inline:auto;
-        padding-top:10px;
-        padding-bottom:10px;
-        padding-left:15px;
-        padding-right:15px;
+
+    body {
+        background-color: #61a5c2;
+    }
+
+    .cashierButton {
+        margin-top: 25%;
+        margin-bottom: 25%;
+        margin-left: 15%;
+        margin-right: 15%;
+        font-family: 'Roboto', sans-serif;
+        background: none;
+        color: #014f86;
+        border: 2px solid;
+        padding: 1em 1em;
+        font-size: 1em;
+        transition: color 0.25s, border-color 0.25s, box-shadow 0.25s,transform 0.25s;
+    }
+
+        .cashierButton:hover, .frame:hover {
+            border-color: #90e0ef;
+            color: #fff1e6;
+            box-shadow: 0 0.5em 0.5em -0.4em #fff1e6;
+            transform: translateY(-0.25em);
+            cursor: pointer;
+        }
+
+    .frame {
+        margin-top: 100px;
+        color: #014f86;
+        border: 5px solid;
+    }
+
+    #usrAction {
+        text-align: center;
     }
 </style>
 
 
+<div class="frame">
+
+    <h1 id="usrAction">@User.Identity.Name's actions</h1>
 
 
-<div class="container-banker">
     <div class="row">
-        <div class="col-lg justify-content-center">
+        <div class="col-sm">
             <form asp-action="ViewAll" method="get">
-                <button class="cashier btn-primary">View all transactions</button>
+                <button class="cashierButton">View all transactions</button>
             </form>
         </div>
-        <div class="col-lg">
+        <div class="col-sm">
+            <div class="col-lg">
             <form asp-action="Create" method="get">
-                <button class="cashier btn-primary">Create a transaction</button>
+                <button class="cashierButton">Create a transaction</button>
             </form>
         </div>
     </div>
+
 </div>
