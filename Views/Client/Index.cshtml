@@ -5,11 +5,28 @@
 }
 
 <style>
-    /* body {
-        background-color: #61a5c2;
+
+    body {
+        /* tuk se smenia fona na stranicata na klienta */ background-color: #61a5c2;
     }
 
-    */
+    .clientButton {
+        font-family: 'Roboto', sans-serif;
+        background: none;
+        color: #014f86;
+        border: 2px solid;
+        font-size: 1em;
+        transition: color 0.25s, border-color 0.25s, box-shadow 0.25s,transform 0.25s;
+    }
+
+    .clientButton:hover {
+        border-color: #90e0ef;
+        color: #fff1e6;
+        box-shadow: 0 0.5em 0.5em -0.4em #fff1e6;
+        transform: translateY(-0.25em);
+        cursor: pointer;
+    }
+
 </style>
 
 
@@ -37,27 +54,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model ) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.currency.FULL_NAME)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BALANCE)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.acctype.NAME)
-            </td>
-            <td>
-                <form asp-action="ViewAll" asp-controller="Cashier" method="get">
-                    <input type="hidden" name="bankAccIDSpecial" id="bankAccIDSpecial" value="@item.ID.ToString()">
-                    <button class="btn btn-primary" type="submit">View transactions</button>
-                </form>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+         {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.currency.FULL_NAME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BALANCE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.acctype.NAME)
+                </td>
+                <td>
+                    <form asp-action="ViewAll" asp-controller="Cashier" method="get">
+                        <input type="hidden" name="bankAccIDSpecial" id="bankAccIDSpecial" value="@item.ID.ToString()">
+                        <button class="clientButton" type="submit">View transactions</button>
+                    </form>
+                </td>
+            </tr>
+         }
     </tbody>
 </table>
