@@ -141,7 +141,7 @@ namespace Bank.Controllers
             return View();
         }
 
-
+        //POST
         [HttpPost]
         public async Task<IActionResult> CreateBankAcc([Bind("BALANCE,CurrencyId,ClientId,AccTypeId")] BankAccount BA)
         {
