@@ -1,6 +1,6 @@
 ﻿
 @{ ViewData["Title"] = "Index";
-                Layout = "~/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 
 <style>
@@ -12,24 +12,23 @@
     .cashierButton {
         margin-top: 25%;
         margin-bottom: 25%;
-        margin-left: 15%;
-        margin-right: 15%;
+        margin-left: 27%;
         font-family: 'Roboto', sans-serif;
         background: none;
         color: #014f86;
         border: 2px solid;
-        padding: 1em 1em;
+        padding: 3em 3em;
         font-size: 1em;
         transition: color 0.25s, border-color 0.25s, box-shadow 0.25s,transform 0.25s;
     }
 
-        .cashierButton:hover, .frame:hover {
-            border-color: #90e0ef;
-            color: #fff1e6;
-            box-shadow: 0 0.5em 0.5em -0.4em #fff1e6;
-            transform: translateY(-0.25em);
-            cursor: pointer;
-        }
+    .cashierButton:hover, .frame:hover {
+        border-color: #90e0ef;
+        color: #fff1e6;
+        box-shadow: 0 0.5em 0.5em -0.4em #fff1e6;
+        transform: translateY(-0.25em);
+        cursor: pointer;
+    }
 
     .frame {
         margin-top: 100px;
@@ -47,7 +46,6 @@
 
     <h1 id="usrAction">@User.Identity.Name's actions</h1>
 
-
     <div class="row">
         <div class="col-sm">
             <form asp-action="ViewAll" method="get">
@@ -55,12 +53,9 @@
             </form>
         </div>
         <div class="col-sm">
-            <div class="col-lg">
             <form asp-action="Create" method="get">
                 <button class="cashierButton">Create a transaction</button>
             </form>
         </div>
     </div>
-
-</div>
 </div>
